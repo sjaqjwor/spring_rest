@@ -2,7 +2,7 @@
 /build/
 !gradle/wrapper/gradle-wrapper.jar
 application.properties
-
+MyAuthentication.java
 
 ### STS ###
 .apt_generated

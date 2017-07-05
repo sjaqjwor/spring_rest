@@ -11,7 +11,7 @@ import java.util.List;
 
 @Mapper
 public interface MemberMapper {
-    List<Member> selectByEmail(String email);
+    Member selectByEmail(String email);
 //    List<User> selectSearch(@Param("selgisu")int selgisu,@Param("searchsel") int searchsel,@Param("searchtxt") String searchtxt);
 //    List<User> selectByUid(String uid);
 //    void updateMng(@Param("uid")String uid,@Param("ustatus")String ustatus, @Param("u_id")String u_id, @Param("u_status")String u_status);

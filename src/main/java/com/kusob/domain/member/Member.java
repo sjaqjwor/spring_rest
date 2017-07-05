@@ -1,7 +1,6 @@
 package com.kusob.domain.member;
 
 import lombok.*;
-import lombok.Setter;
 
 /**
  * Created by kusob on 2017. 7. 4..
@@ -13,6 +12,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @Builder
 public class Member {
+    private int member_id;
     private String email;
     private String password;
+    private String name;
 }

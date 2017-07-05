@@ -5,8 +5,10 @@
 <configuration>
     <typeAliases>
         <package name="com.kusob.mapper.NoticeMapper"/>
+        <package name="com.kusob.mapper.MemberMapper"/>
     </typeAliases>
     <mappers>
         <mapper resource="mapper/NoticeMapper.xml"/>
+        <mapper resource="mapper/MemberMapper.xml"/>
     </mappers>
 </configuration>
