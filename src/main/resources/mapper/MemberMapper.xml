@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kusob.mapper.MemberMapper">
+    <select id="selectByEmail" resultType="com.kusob.domain.member.Member">
+        select * from member;
+    </select>
+    <!--<select id="selectSearch" resultType="skhu.model.User">-->
+        <!--exec [dbo].searchselp #{selgisu}, #{searchsel}, #{searchtxt}-->
+    <!--</select>-->
+    <!--<select id="selectByUid" resultType="skhu.model.User">-->
+        <!--select * from [user] where u_id = #{uid}-->
+    <!--</select>-->
+    <!--<update id="updateMng">-->
+        <!--update [dbp1].[dbo].[USER]-->
+        <!--set u_status = #{ustatus}-->
+        <!--where u_id = #{u_id};-->
+        <!--update [dbp1].[dbo].[USER]-->
+        <!--set u_status = #{u_status}-->
+        <!--where u_id = #{uid}-->
+    <!--</update>-->
+</mapper>
