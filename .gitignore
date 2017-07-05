@@ -3,6 +3,7 @@
 !gradle/wrapper/gradle-wrapper.jar
 application.properties
 /src/main/java/com/kusob/domain/member/MyAuthentication.java
+MyAuthentication.java
 
 ### STS ###
 .apt_generated

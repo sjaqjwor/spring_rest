@@ -53,12 +53,12 @@ public class MemberService {
             session.setDebug(true); // 메일을 전송할 때 상세한 상황을 콘솔에 출력한다.
             MimeMessage msg = new MimeMessage(session);
 
-            msg.setSubject("인증코드입니다");
+            msg.setSubject("회원가입을 위한 인증코드입니다!");
             Address fromAddr = new InternetAddress("lsklsk4341@gmail.com"); // 보내는사람 EMAIL
             msg.setFrom(fromAddr);
-            Address toAddr = new InternetAddress("holein0ne@naver.com");    //받는사람 EMAIL
+            Address toAddr = new InternetAddress(email);    //받는사람 EMAIL
             msg.addRecipient(Message.RecipientType.TO, toAddr);
-            msg.setContent("메일에 전송될 내용"+authCode, "text/plain;charset=KSC5601"); //메일 전송될 내용
+            msg.setContent("인증코드는 : "+authCode+" 입니다.", "text/plain;charset=KSC5601"); //메일 전송될 내용
             Transport.send(msg);
         } catch (Exception e) {
             e.printStackTrace();
