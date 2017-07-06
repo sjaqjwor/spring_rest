@@ -1,7 +1,9 @@
 package com.kusob.mapper;
 
 import com.kusob.domain.member.Member;
+import com.kusob.domain.member.MemberDTO;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -12,7 +14,5 @@ import java.util.List;
 @Mapper
 public interface MemberMapper {
     Member selectByEmail(String email);
-//    List<User> selectSearch(@Param("selgisu")int selgisu,@Param("searchsel") int searchsel,@Param("searchtxt") String searchtxt);
-//    List<User> selectByUid(String uid);
-//    void updateMng(@Param("uid")String uid,@Param("ustatus")String ustatus, @Param("u_id")String u_id, @Param("u_status")String u_status);
+    void join(MemberDTO memberDTO);
 }

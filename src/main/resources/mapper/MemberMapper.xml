@@ -6,18 +6,7 @@
     <select id="selectByEmail" resultType="com.kusob.domain.member.Member">
         select email from member where email=#{email};
     </select>
-    <!--<select id="selectSearch" resultType="skhu.model.User">-->
-        <!--exec [dbo].searchselp #{selgisu}, #{searchsel}, #{searchtxt}-->
-    <!--</select>-->
-    <!--<select id="selectByUid" resultType="skhu.model.User">-->
-        <!--select * from [user] where u_id = #{uid}-->
-    <!--</select>-->
-    <!--<update id="updateMng">-->
-        <!--update [dbp1].[dbo].[USER]-->
-        <!--set u_status = #{ustatus}-->
-        <!--where u_id = #{u_id};-->
-        <!--update [dbp1].[dbo].[USER]-->
-        <!--set u_status = #{u_status}-->
-        <!--where u_id = #{uid}-->
-    <!--</update>-->
+    <insert id="join">
+        insert into member(email, password, nickname) values(#{email}, #{password}, #{nickname});
+    </insert>
 </mapper>
