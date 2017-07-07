@@ -6,9 +6,11 @@
     <typeAliases>
         <package name="com.kusob.mapper.NoticeMapper"/>
         <package name="com.kusob.mapper.MemberMapper"/>
+        <package name="com.kusob.mapper.WalletMapper"/>
     </typeAliases>
     <mappers>
         <mapper resource="mapper/NoticeMapper.xml"/>
         <mapper resource="mapper/MemberMapper.xml"/>
+        <mapper resource="mapper/WalletMapper.xml"/>
     </mappers>
 </configuration>
