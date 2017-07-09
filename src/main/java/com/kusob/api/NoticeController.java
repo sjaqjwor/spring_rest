@@ -64,7 +64,6 @@ public class NoticeController {
     @RequestMapping(value = "", method = RequestMethod.GET)
     public List<Notice> allList() {
         try {
-            System.out.println("success");
             return noticeMapper.selectAll();
         } catch (Exception e) {
             log.info(e.getMessage());
