@@ -8,6 +8,9 @@
 	        select memberId from member where email = #{email}
         );
     </select>
+    <select id="selectByWalletId" resultType="com.kusob.domain.wallet.Wallet">
+        SELECT * FROM wallet where walletId = #{walletId};
+    </select>
     <insert id="addWallet">
         INSERT INTO 
           wallet (walletName, memberId) 

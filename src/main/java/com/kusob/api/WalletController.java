@@ -37,6 +37,18 @@ public class WalletController {
         return null;
     }
 
+    @ApiOperation(value = "wallet id로 조회한 지갑 1개의 상세 정보", notes = "walletId로 검색하여 지갑정보를 가져온다")
+    @RequestMapping(value = "info", method = RequestMethod.GET)
+    public Wallet info(@ApiParam(value = "DB의 wallet id")
+                                   @RequestParam(value = "walletId") int walletId) {
+        try {
+            return walletService.getWallet(walletId);
+        } catch (Exception e) {
+            log.info(e.getMessage());
+        }
+        return null;
+    }
+
     @ApiOperation(value = "지갑 추가", notes = "지갑추가 api")
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public ResponseDTO add(@ApiParam(value = "지갑추가할때 필요한 정보들") @RequestBody WalletAddDTO walletAddDTO) {

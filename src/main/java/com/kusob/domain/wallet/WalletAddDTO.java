@@ -13,4 +13,6 @@ import lombok.*;
 public class WalletAddDTO {
     String email;
     String walletName;
+    String walletSite;
+    String walletAddr;
 }

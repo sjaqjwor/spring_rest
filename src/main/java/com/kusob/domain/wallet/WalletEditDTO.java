@@ -13,4 +13,6 @@ import lombok.*;
 public class WalletEditDTO {
     int walletId;
     String walletName;
+    String walletSite;
+    String walletAddr;
 }

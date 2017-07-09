@@ -24,6 +24,14 @@ public class WalletService {
         }
         return list;
     }
+    
+    public Wallet getWallet(int walletId){
+        Wallet wallet = walletMapper.selectByWalletId(walletId);
+        if(wallet==null){
+            wallet = new Wallet();
+        }
+        return wallet;
+    }
 
     public ResponseDTO addWallet(WalletAddDTO walletAddDTO) {
         ResponseDTO responseDTO = new ResponseDTO();
