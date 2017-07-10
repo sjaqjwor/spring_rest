@@ -13,15 +13,17 @@
     </select>
     <insert id="addWallet">
         INSERT INTO 
-          wallet (walletName, memberId) 
+          wallet (walletName,walletSite,walletAddr, memberId) 
         VALUES
-          (#{walletName}, (select memberId from member where email = #{email}));
+          (#{walletName},#{walletSite},#{walletAddr}, (select memberId from member where email = #{email}));
     </insert>
     <update id="editWallet">
         UPDATE
           wallet 
         SET
-          walletName = #{walletName}
+          walletName = #{walletName},
+          walletSite = #{walletSite},
+          walletAddr = #{walletAddr}
         WHERE
           walletId = #{walletId};
     </update>

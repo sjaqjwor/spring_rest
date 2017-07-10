@@ -19,4 +19,5 @@ public class PriceInfo {
     private String marketCap;
     private String graphImg;
     private String shortSite;
+    private double div;
 }
