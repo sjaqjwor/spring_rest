@@ -1,5 +1,6 @@
 package com.kusob.api;
 
+import com.kusob.domain.priceInfo.CryptocompareService;
 import com.kusob.domain.priceInfo.PriceInfo;
 import com.kusob.domain.priceInfo.PriceInfoService;
 import io.swagger.annotations.Api;
@@ -25,6 +26,8 @@ import java.util.List;
 public class PriceInfoController {
     @Autowired
     PriceInfoService priceInfoService;
+    @Autowired
+    CryptocompareService cryptocompareService;
 
     @ApiOperation(value = "시세정보", notes = "6개 주요 사이트에 대한 암호화폐 시세정보")
     @RequestMapping(value = "info", method = RequestMethod.GET)
@@ -36,5 +39,16 @@ public class PriceInfoController {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @ApiOperation(value = "시세정보(cryptocompare.com)", notes = "6개 주요 사이트에 대한 암호화폐 시세정보-cryptocompare.com")
+    @RequestMapping(value = "cryptocompare", method = RequestMethod.GET)
+    public void cryptocompareInfo() {
+        try {
+            cryptocompareService.getInfo();
+        } catch (Exception e) {
+            log.info(e.getMessage());
+            e.printStackTrace();
+        }
     }
 }
