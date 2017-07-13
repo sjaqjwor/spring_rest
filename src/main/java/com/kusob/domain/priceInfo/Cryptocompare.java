@@ -11,11 +11,13 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 public class Cryptocompare {
+    String title;
     String krw;
     String btc;
     String btcKrw;
     String usd;
     String usdKrw;
     String usdKrwPremium;
+    String percent;
     String mktcap;
 }
