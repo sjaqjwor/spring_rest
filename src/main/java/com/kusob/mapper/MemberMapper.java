@@ -14,5 +14,6 @@ import java.util.List;
 @Mapper
 public interface MemberMapper {
     Member selectByEmail(String email);
+    Member selectByLoginEmail(String email);
     void join(MemberDTO memberDTO);
 }

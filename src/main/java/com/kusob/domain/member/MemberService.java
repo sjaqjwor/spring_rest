@@ -1,8 +1,15 @@
 package com.kusob.domain.member;
 
+import com.kusob.config.JwtConfig.JwtResponseDto;
+import com.kusob.config.JwtConfig.JwtService;
 import com.kusob.domain.ResponseDTO;
 import com.kusob.mapper.MemberMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -19,6 +26,13 @@ import javax.mail.internet.MimeMessage;
 public class MemberService {
     @Autowired
     MemberMapper memberMapper;
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private JwtService jwtService;
+
 
     public Member checkEmail(String email) {
         Member member = memberMapper.selectByEmail(email);
@@ -79,6 +93,24 @@ public class MemberService {
             System.out.println(e);
         }
         return responseDTO;
+    }
+    public JwtResponseDto login(MemberDTO memberDTO) throws AuthenticationException {
+        //파라미터로 받은 이름 비번을 가지고 인증전에 객체 생성
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(memberDTO.getEmail(),memberDTO.getPassword());
+        String jwtToken =null;
+        JwtResponseDto jwtResponseDto = null;
+        try{
+            //생성한 객체를 보내면 Manager가 userDetails를 거쳐서 인증함
+            final Authentication authentication = authenticationManager.authenticate(authenticationToken);
+            //인증하 객체를 security에 저장
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            jwtToken=jwtService.createToken(authenticationToken,authentication.getName());
+            jwtResponseDto = new JwtResponseDto(jwtToken,"success");
+        }catch (Exception e){
+            jwtResponseDto = new JwtResponseDto("인증실패","fail");
+            System.out.println(e);
+        }
+        return jwtResponseDto;
     }
 }
 

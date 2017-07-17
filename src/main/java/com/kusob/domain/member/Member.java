@@ -12,7 +12,7 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 public class Member {
-    private int memberId;
+    private int Id;
     private String email;
     private String password;
     private String nickname;

@@ -1,16 +1,18 @@
 package com.kusob.api;
 
+import com.kusob.config.JwtConfig.JwtResponseDto;
 import com.kusob.domain.ResponseDTO;
 import com.kusob.domain.member.AuthCode;
 import com.kusob.domain.member.Member;
 import com.kusob.domain.member.MemberDTO;
 import com.kusob.domain.member.MemberService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import javax.naming.AuthenticationException;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * Created by kusob on 2017. 7. 5..
@@ -57,5 +59,31 @@ public class MemberController {
         }
         return null;
     }
+    @ApiOperation(value = "로그인", notes="로그인 api")
+    @RequestMapping(value="/login",method = RequestMethod.POST)
+    public JwtResponseDto login(@ApiParam(value = "member obj") @RequestBody MemberDTO memberDTO)  throws AuthenticationException {
+        try{
+            return memberService.login(memberDTO);
+        }catch (Exception e){
+            log.info(e.getMessage());
+        }
+        return null;
+    }
 
+
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value ="authorization header", required = true,
+                    dataType = "string", paramType = "Header")
+    })
+    @ApiOperation(value = "로그인확인", notes="로그인확인 api")
+    @RequestMapping(value="/loginConfirm",method = RequestMethod.GET)
+    public JwtResponseDto loginConfirm(HttpServletRequest httpServletRequest)  throws AuthenticationException {
+        try{
+            System.out.print("성공");
+            return null;
+        }catch (Exception e){
+            log.info(e.getMessage());
+        }
+        return null;
+    }
 }

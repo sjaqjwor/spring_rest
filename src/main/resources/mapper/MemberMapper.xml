@@ -4,9 +4,12 @@
 
 <mapper namespace="com.kusob.mapper.MemberMapper">
     <select id="selectByEmail" resultType="com.kusob.domain.member.Member">
-        select email from member where email=#{email};
+        select email from Members where email=#{email};
+    </select>
+    <select id="selectByLoginEmail" resultType="com.kusob.domain.member.Member">
+        select * from Members where email=#{email};
     </select>
     <insert id="join">
-        insert into member(email, password, nickname) values(#{email}, #{password}, #{nickname});
+        insert into Members(email, password, nickname) values(#{email}, #{password}, #{nickname});
     </insert>
 </mapper>
