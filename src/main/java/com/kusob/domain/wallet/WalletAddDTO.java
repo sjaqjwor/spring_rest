@@ -11,8 +11,8 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 public class WalletAddDTO {
-    String email;
+    int wallet_id;
     String walletName;
-    String walletSite;
     String walletAddr;
+    String walletQr;
 }

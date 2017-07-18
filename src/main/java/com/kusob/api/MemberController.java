@@ -1,11 +1,9 @@
 package com.kusob.api;
 
 import com.kusob.config.JwtConfig.JwtResponseDto;
+import com.kusob.config.JwtConfig.JwtService;
 import com.kusob.domain.ResponseDTO;
-import com.kusob.domain.member.AuthCode;
-import com.kusob.domain.member.Member;
-import com.kusob.domain.member.MemberDTO;
-import com.kusob.domain.member.MemberService;
+import com.kusob.domain.member.*;
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.naming.AuthenticationException;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 
 /**
  * Created by kusob on 2017. 7. 5..
@@ -24,6 +23,9 @@ import javax.servlet.http.HttpServletRequest;
 public class MemberController {
     @Autowired
     MemberService memberService;
+
+    @Autowired
+    JwtService jwtService;
 
     @ApiOperation(value = "이메일로 멤버 검색", notes = "이메일로 멤버 검색 혹은 이메일 중복검사")
     @RequestMapping(value = "", method = RequestMethod.GET)
@@ -61,9 +63,9 @@ public class MemberController {
     }
     @ApiOperation(value = "로그인", notes="로그인 api")
     @RequestMapping(value="/login",method = RequestMethod.POST)
-    public JwtResponseDto login(@ApiParam(value = "member obj") @RequestBody MemberDTO memberDTO)  throws AuthenticationException {
+    public JwtResponseDto login(@RequestBody MemberLoginDto memberLoginDto)  throws AuthenticationException {
         try{
-            return memberService.login(memberDTO);
+            return memberService.login(memberLoginDto);
         }catch (Exception e){
             log.info(e.getMessage());
         }
@@ -79,6 +81,9 @@ public class MemberController {
     @RequestMapping(value="/loginConfirm",method = RequestMethod.GET)
     public JwtResponseDto loginConfirm(HttpServletRequest httpServletRequest)  throws AuthenticationException {
         try{
+            String token = httpServletRequest.getHeader("Authorization");
+            Date date = jwtService.expFromToken(token);
+            System.out.println(date);
             System.out.print("성공");
             return null;
         }catch (Exception e){

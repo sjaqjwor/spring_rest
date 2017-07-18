@@ -9,7 +9,17 @@
     <select id="selectByLoginEmail" resultType="com.kusob.domain.member.Member">
         select * from Members where email=#{email};
     </select>
+    <select id="selectById" resultType="com.kusob.domain.member.MemberFreindDto">
+        select *
+        from Members
+        WHERE id=#{id};
+    </select>
     <insert id="join">
         insert into Members(email, password, nickname) values(#{email}, #{password}, #{nickname});
     </insert>
+    <select id="selectByFriend" resultType="com.kusob.domain.member.MemberFreindDto">
+        SELECT *
+        FROM Members
+        where nickname like "%"#{nickname}"%" and not id=#{id}
+    </select>
 </mapper>

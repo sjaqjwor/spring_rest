@@ -13,8 +13,8 @@ import java.util.List;
 
 @Mapper
 public interface WalletMapper {
-    List<Wallet> selectByEmail(String email);
+   // List<Wallet> selectByEmail(String email);
     Wallet selectByWalletId(int walletId);
     void addWallet(WalletAddDTO walletAddDTO);
-    void editWallet(WalletEditDTO walletEditDTO);
+    //void editWallet(WalletEditDTO walletEditDTO);
 }

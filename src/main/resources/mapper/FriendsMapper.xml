@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kusob.mapper.FriendsMapper">
+    <insert id="meetFriends">
+        INSERT INTO Friends(id,opponent_id,status,append_date)
+        VALUES (#{id},#{opponent_id},#{status},now())
+    </insert>
+    <update id="agree">
+      UPDATE Friends
+      SET
+        status=2
+      WHERE
+        (id=#{myid} and opponent_id=#{opponent_id}) or (id=#{opponent_id} and opponent_id=#{myid});
+    </update>
+    <select id = "confirmMySide" resultType="int">
+        select opponent_id
+        from Friends
+        where id=#{id} and status=0;
+    </select>
+    <select id = "confirmCheck" resultType="int">
+        select opponent_id
+        from Friends
+        where id=#{id} and status=1;
+    </select>
+    <select id = "myFriend" resultType="int">
+        select opponent_id
+        from Friends
+        where id=#{id} and status=2;
+    </select>
+</mapper>

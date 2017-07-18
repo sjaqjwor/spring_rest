@@ -3,28 +3,17 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.kusob.mapper.WalletMapper">
-    <select id="selectByEmail" resultType="com.kusob.domain.wallet.Wallet">
-        SELECT * FROM wallet where memberId = (
-	        select memberId from member where email = #{email}
-        );
-    </select>
-    <select id="selectByWalletId" resultType="com.kusob.domain.wallet.Wallet">
-        SELECT * FROM wallet where walletId = #{walletId};
-    </select>
-    <insert id="addWallet">
+
+    <insert id="addWallet" useGeneratedKeys="true" parameterType="com.kusob.domain.wallet.Wallet" keyProperty="wallet_id">
         INSERT INTO 
-          wallet (walletName,walletSite,walletAddr, memberId) 
+          Wallets (wallet_name,wallet_add,wallet_qrcode, create_date)
         VALUES
-          (#{walletName},#{walletSite},#{walletAddr}, (select memberId from member where email = #{email}));
+          (#{walletName},#{walletAddr},#{walletQr},now());
     </insert>
-    <update id="editWallet">
-        UPDATE
-          wallet 
-        SET
-          walletName = #{walletName},
-          walletSite = #{walletSite},
-          walletAddr = #{walletAddr}
-        WHERE
-          walletId = #{walletId};
-    </update>
+    <select id="selectByWalletId" resultType="com.kusob.domain.wallet.Wallet">
+      select *
+      from Wallets
+      where wallet_id=#{id}
+    </select>
+
 </mapper>

@@ -7,10 +7,14 @@
         <package name="com.kusob.mapper.NoticeMapper"/>
         <package name="com.kusob.mapper.MemberMapper"/>
         <package name="com.kusob.mapper.WalletMapper"/>
+        <package name="com.kusob.mapper.MemberToWalletsMapper" />
+        <package name="com.kusob.mapper.FriendsMapper" />
     </typeAliases>
     <mappers>
         <mapper resource="mapper/NoticeMapper.xml"/>
         <mapper resource="mapper/MemberMapper.xml"/>
         <mapper resource="mapper/WalletMapper.xml"/>
+        <mapper resource="mapper/MemberToWalletsMapper.xml"/>
+        <mapper resource="mapper/FriendsMapper.xml"/>
     </mappers>
 </configuration>

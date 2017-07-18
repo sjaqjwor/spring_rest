@@ -14,4 +14,9 @@ public class MemberDTO {
     String email;
     String password;
     String nickname;
+
+    public MemberDTO(String email,String password){
+        this.password=password;
+        this.email=email;
+    }
 }

@@ -1,12 +1,16 @@
 package com.kusob.domain.wallet;
 
+import com.kusob.config.JwtConfig.JwtService;
+import com.kusob.domain.MemberToWallets.MemberToWallets;
 import com.kusob.domain.ResponseDTO;
+import com.kusob.mapper.MemberMapper;
+import com.kusob.mapper.MemberToWalletsMapper;
 import com.kusob.mapper.WalletMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.LinkedList;
-import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import java.util.*;
 
 /**
  * Created by kusob on 2017. 7. 8..
@@ -14,29 +18,59 @@ import java.util.List;
 
 @Service
 public class WalletService {
+
+
+    @Autowired
+    JwtService jwtService;
+
+    @Autowired
+    MemberToWalletsMapper memberToWalletsMapper;
+
     @Autowired
     WalletMapper walletMapper;
 
-    public List<Wallet> getWalletList(String email) {
-        List<Wallet> list = walletMapper.selectByEmail(email);
-        if (list == null) { //중복이 아니라면 null을 리턴하는데, no content를 리턴하지않고 빈 json을 리턴하기위해서
-            list = new LinkedList<>(); //빈객체를 생성해서 보낸다
+    public Map getWalletList(HttpServletRequest httpServletRequest) throws Exception{
+        List<Integer> list =null;
+        List<Wallet> w_list=null;
+        Map<Integer,Wallet> mylist = new HashMap<>();
+        try{
+            String token = httpServletRequest.getHeader("Authorization");
+            int id = jwtService.idFromToken(token);
+            list = new ArrayList<>();
+            list = memberToWalletsMapper.selectById(id);
+            for(int num : list){
+                w_list.add(walletMapper.selectByWalletId(num));
+            }
+            for(int a=0;a<w_list.size();a++){
+                mylist.put(a+1,w_list.get(a));
+            }
+        }catch (Exception e){
+            throw new Exception();
         }
-        return list;
+        return mylist;
+
     }
-    
+/*
     public Wallet getWallet(int walletId){
-        Wallet wallet = walletMapper.selectByWalletId(walletId);
+        //Wallet wallet = walletMapper.selectByWalletId(walletId);
         if(wallet==null){
             wallet = new Wallet();
         }
         return wallet;
     }
-
-    public ResponseDTO addWallet(WalletAddDTO walletAddDTO) {
+*/
+    public ResponseDTO addWallet(String name,String wallet, HttpServletRequest httpServletRequest) {
         ResponseDTO responseDTO = new ResponseDTO();
         try {
-            walletMapper.addWallet(walletAddDTO);
+            WalletAddDTO w = new WalletAddDTO();
+            w.setWalletName(name);
+            w.setWalletAddr(wallet);
+            w.setWalletQr("아직");
+            walletMapper.addWallet(w);
+            String token = httpServletRequest.getHeader("Authorization");
+            int id = jwtService.idFromToken(token);
+            MemberToWallets mtw = new MemberToWallets(id,w.getWallet_id());
+            memberToWalletsMapper.MemeberToWallet(mtw);
             responseDTO.setMessage("SUCCESS");
         } catch (Exception e) {
             responseDTO.setMessage("FAIL");
@@ -48,7 +82,7 @@ public class WalletService {
     public ResponseDTO editWallet(WalletEditDTO walletEditDTO) {
         ResponseDTO responseDTO = new ResponseDTO();
         try {
-            walletMapper.editWallet(walletEditDTO);
+            //walletMapper.editWallet(walletEditDTO);
             responseDTO.setMessage("SUCCESS");
         } catch (Exception e) {
             responseDTO.setMessage("FAIL");

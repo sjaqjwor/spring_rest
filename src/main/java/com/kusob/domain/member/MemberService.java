@@ -2,8 +2,10 @@ package com.kusob.domain.member;
 
 import com.kusob.config.JwtConfig.JwtResponseDto;
 import com.kusob.config.JwtConfig.JwtService;
+import com.kusob.domain.Friends.FriendSearchDto;
 import com.kusob.domain.ResponseDTO;
 import com.kusob.mapper.MemberMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -12,16 +14,16 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.Properties;
+import java.util.*;
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * Created by kusob on 2017. 7. 5..
  */
-
+@Slf4j
 @Service
 public class MemberService {
     @Autowired
@@ -94,8 +96,9 @@ public class MemberService {
         }
         return responseDTO;
     }
-    public JwtResponseDto login(MemberDTO memberDTO) throws AuthenticationException {
+    public JwtResponseDto login(MemberLoginDto memberLoginDto) throws AuthenticationException {
         //파라미터로 받은 이름 비번을 가지고 인증전에 객체 생성
+        MemberDTO memberDTO = new MemberDTO(memberLoginDto.getEmail(),memberLoginDto.getPassword());
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(memberDTO.getEmail(),memberDTO.getPassword());
         String jwtToken =null;
         JwtResponseDto jwtResponseDto = null;
@@ -105,12 +108,32 @@ public class MemberService {
             //인증하 객체를 security에 저장
             SecurityContextHolder.getContext().setAuthentication(authentication);
             jwtToken=jwtService.createToken(authenticationToken,authentication.getName());
-            jwtResponseDto = new JwtResponseDto(jwtToken,"success");
+            jwtResponseDto = new JwtResponseDto(jwtToken,"SUCCESS");
         }catch (Exception e){
-            jwtResponseDto = new JwtResponseDto("인증실패","fail");
+            jwtResponseDto = new JwtResponseDto("인증실패","FAIL");
             System.out.println(e);
         }
         return jwtResponseDto;
+    }
+
+    public Map searchFriend(String name, HttpServletRequest httpServletRequest){
+        List<MemberFreindDto> searchFriends=null;
+        Map<Integer,MemberFreindDto> fmap = new HashMap<>();
+        try {
+            String token = httpServletRequest.getHeader("Authorization");
+            int id = jwtService.idFromToken(token);
+            searchFriends = new ArrayList<>();
+            FriendSearchDto fd = new FriendSearchDto(name,id);
+            searchFriends=memberMapper.selectByFriend(fd);
+            for(int a=0;a<searchFriends.size();a++){
+                fmap.put(a+1,searchFriends.get(a));
+            }
+            return fmap;
+        }catch (Exception e){
+            fmap=new HashMap<>();
+            fmap.put(0,null);
+        }
+        return fmap;
     }
 }
 

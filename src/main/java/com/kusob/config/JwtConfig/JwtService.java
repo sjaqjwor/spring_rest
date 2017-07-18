@@ -37,6 +37,8 @@ public class JwtService implements UserDetailsService{
     public String createToken(UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken,String nickname){
         Map<String, Object> claims = new HashMap<>();
         Member m = memberMapper.selectByLoginEmail(usernamePasswordAuthenticationToken.getName());
+        claims.put("id",m.getId());
+        claims.put(CLAIM_KEY_EMAIL,m.getEmail());
         return Jwts.builder()
                 .setClaims(claims)
                 .setExpiration(new Date(new Date().getTime()+expiration*1000))
@@ -81,6 +83,16 @@ public class JwtService implements UserDetailsService{
             email = null;
         }
         return email;
+    }
+    public int idFromToken(String token) {
+        int id;
+        try {
+            final Claims claims = getClaimsFromToken(token);
+            id = Integer.parseInt(claims.get("id").toString());
+        } catch (Exception e) {
+            id = 0;
+        }
+        return id;
     }
     public  Date expFromToken(String token){
         Date exp;

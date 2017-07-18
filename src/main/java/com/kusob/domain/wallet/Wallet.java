@@ -13,7 +13,8 @@ import lombok.*;
 public class Wallet {
     int walletId;
     String walletName;
-    String walletSite;
     String walletAddr;
-    int memberId;
+    String walletQr;
+    String walletCreate;
+
 }
