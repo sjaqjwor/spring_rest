@@ -20,4 +20,5 @@ public interface MemberMapper {
     void join(MemberDTO memberDTO);
     List<MemberFreindDto> selectByFriend(FriendSearchDto friendSearchDto);
     MemberFreindDto selectById(int id);
+    String nicknameCheck(String nickname);
 }

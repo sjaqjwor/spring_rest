@@ -9,6 +9,9 @@
         <package name="com.kusob.mapper.WalletMapper"/>
         <package name="com.kusob.mapper.MemberToWalletsMapper" />
         <package name="com.kusob.mapper.FriendsMapper" />
+        <package name="com.kusob.mapper.PostsMapper" />
+        <package name="com.kusob.mapper.PostLikesMapper" />
+        <package name="com.kusob.mapper.CommentsMapper" />
     </typeAliases>
     <mappers>
         <mapper resource="mapper/NoticeMapper.xml"/>
@@ -16,5 +19,8 @@
         <mapper resource="mapper/WalletMapper.xml"/>
         <mapper resource="mapper/MemberToWalletsMapper.xml"/>
         <mapper resource="mapper/FriendsMapper.xml"/>
+        <mapper resource="mapper/PostsMapper.xml"/>
+        <mapper resource="mapper/PostLikesMapper.xml"/>
+        <mapper resource="mapper/CommentsMapper.xml"/>
     </mappers>
 </configuration>

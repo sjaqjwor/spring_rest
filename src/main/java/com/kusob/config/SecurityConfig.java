@@ -30,6 +30,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableGlobalMethodSecurity(prePostEnabled = true) //Spring Security사용을 위한 Annotation
 public class SecurityConfig extends WebSecurityConfigurerAdapter
 {
+
+    @Autowired
+    private JwtAuthenticationEntryPoint unauthorizedHandler;
+
+
     @Bean
     public CorsFilter corsFilter() throws Exception{
         return new CorsFilter();
@@ -53,6 +58,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
                 .authorizeRequests()
                 .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .antMatchers("/**").permitAll()
+                .antMatchers(HttpMethod.GET).permitAll()
                 .anyRequest().authenticated();
 
         httpSecurity

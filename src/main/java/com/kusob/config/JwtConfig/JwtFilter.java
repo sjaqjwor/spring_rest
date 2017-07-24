@@ -22,9 +22,11 @@ public class JwtFilter extends OncePerRequestFilter {
     private JwtService jwtService;
 
     @Override
-    protected  void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException,IOException{
+    protected  void doFilterInternal (HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException,IOException{
         String authToken = request.getHeader("Authorization");
+        System.out.println(authToken+"gghhh");
         String email = jwtService.emailFromToken(authToken);
+        System.out.println(email+"asdasd");
         if(email != null && SecurityContextHolder.getContext().getAuthentication() == null){
             UserDetails userDetails = this.jwtService.loadUserByUsername(email);
 

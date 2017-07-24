@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kusob.mapper.PostsMapper">
+    <select id="allList_3" resultType="com.kusob.domain.Posts.Posts">
+      select p.*,m.nickname
+      FROM Posts p join Members m
+      on p.writter_id=m.id
+      ORDER BY likes_count DESC
+      limit 3;
+    </select>
+    <select id="allList"  resultType="com.kusob.domain.Posts.Posts">
+      select p.*,m.nickname
+      FROM Posts p join Members m
+      on p.writter_id=m.id
+      where p.post_id not in(#{one},#{two},#{three})
+      ORDER BY p.written_date DESC
+      limit #{num};
+    </select>
+    <insert id="createPost">
+      insert into Posts(title,writter_id,contents,written_date,likes_count)
+      VALUES(#{title},#{writter_id},#{contents},now(),0);
+    </insert>
+    <delete id="deletePosts">
+      delete from Posts where post_id=#{id};
+    </delete>
+    <select id="postsInfo" resultType="com.kusob.domain.Posts.Posts">
+      select *
+      From Posts
+      where post_id=#{id};
+    </select>
+    <update id="eddPost">
+        update Posts
+        SET
+            title=#{title},
+            contents=#{contents}
+        where post_id=#{post_id};
+    </update>
+    <update id="postlike">
+      update Posts
+      SET
+       likes_count=#{likes_count}
+       WHERE post_id=#{post_id};
+    </update>
+
+</mapper>

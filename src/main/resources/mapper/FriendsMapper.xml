@@ -29,4 +29,12 @@
         from Friends
         where id=#{id} and status=2;
     </select>
+    <delete id="deleteFrined">
+      DELETE FROM Friends where (opponent_id=#{opponentid}) or (id=#{opponentid} and opponent_id=#{id});
+    </delete>
+    <select id="existFrined" resultType="com.kusob.domain.Friends.Friends">
+        select *
+        from Friends
+        where opponent_id=#{opponent_id} and id=#{myid}
+    </select>
 </mapper>

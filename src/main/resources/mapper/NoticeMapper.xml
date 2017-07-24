@@ -10,7 +10,7 @@
         select * from coin.notice;
     </select>
     <select id="selectAll" resultType="com.kusob.domain.notice.Notice">
-        select * from coin.notice;
+        select * from Jewelry_Pocket.Notices;
     </select>
     <!--<select id="selectSearch" resultType="skhu.model.User">-->
     <!--exec [dbo].searchselp #{selgisu}, #{searchsel}, #{searchtxt}-->

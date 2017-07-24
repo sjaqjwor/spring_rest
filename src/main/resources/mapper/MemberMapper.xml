@@ -22,4 +22,9 @@
         FROM Members
         where nickname like "%"#{nickname}"%" and not id=#{id}
     </select>
+    <select id="nicknameCheck" resultType="String">
+        SELECT nickname
+        from Members
+        where nickname=#{nickname};
+    </select>
 </mapper>

@@ -3,9 +3,9 @@ package com.kusob.domain.wallet;
 import com.kusob.config.JwtConfig.JwtService;
 import com.kusob.domain.MemberToWallets.MemberToWallets;
 import com.kusob.domain.ResponseDTO;
-import com.kusob.mapper.MemberMapper;
 import com.kusob.mapper.MemberToWalletsMapper;
 import com.kusob.mapper.WalletMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +17,7 @@ import java.util.*;
  */
 
 @Service
+@Slf4j
 public class WalletService {
 
 
@@ -29,25 +30,20 @@ public class WalletService {
     @Autowired
     WalletMapper walletMapper;
 
-    public Map getWalletList(HttpServletRequest httpServletRequest) throws Exception{
-        List<Integer> list =null;
+    public ListWalletResponse getWalletList(int id) throws Exception{
+        List<Integer> list ;
         List<Wallet> w_list=null;
-        Map<Integer,Wallet> mylist = new HashMap<>();
         try{
-            String token = httpServletRequest.getHeader("Authorization");
-            int id = jwtService.idFromToken(token);
-            list = new ArrayList<>();
             list = memberToWalletsMapper.selectById(id);
-            for(int num : list){
-                w_list.add(walletMapper.selectByWalletId(num));
+            w_list=new ArrayList<>();
+            for(int a=0;a<list.size();a++){
+                w_list.add(walletMapper.walletList(list.get(a)));
             }
-            for(int a=0;a<w_list.size();a++){
-                mylist.put(a+1,w_list.get(a));
-            }
+
+           return new ListWalletResponse("SUCCESS",w_list);
         }catch (Exception e){
             throw new Exception();
         }
-        return mylist;
 
     }
 /*
@@ -59,13 +55,13 @@ public class WalletService {
         return wallet;
     }
 */
-    public ResponseDTO addWallet(String name,String wallet, HttpServletRequest httpServletRequest) {
+    public ResponseDTO addWallet(WalletRequestDto walletRequestDto, HttpServletRequest httpServletRequest) {
         ResponseDTO responseDTO = new ResponseDTO();
         try {
             WalletAddDTO w = new WalletAddDTO();
-            w.setWalletName(name);
-            w.setWalletAddr(wallet);
-            w.setWalletQr("아직");
+            w.setWalletName(walletRequestDto.getWalletName());
+            w.setWalletAddr(walletRequestDto.getWalletAddr());
+            w.setWalletType(walletRequestDto.getWalletType());
             walletMapper.addWallet(w);
             String token = httpServletRequest.getHeader("Authorization");
             int id = jwtService.idFromToken(token);
@@ -82,13 +78,31 @@ public class WalletService {
     public ResponseDTO editWallet(WalletEditDTO walletEditDTO) {
         ResponseDTO responseDTO = new ResponseDTO();
         try {
-            //walletMapper.editWallet(walletEditDTO);
+            walletMapper.editWallet(walletEditDTO);
             responseDTO.setMessage("SUCCESS");
         } catch (Exception e) {
             responseDTO.setMessage("FAIL");
             System.out.println(e);
         }
         return responseDTO;
+    }
+
+    public ResponseDTO delete(int id,HttpServletRequest httpServletRequest) throws Exception{
+        try{
+            walletMapper.deleteWallet(id);
+            return new ResponseDTO("SUCCESS");
+        }catch (Exception e){
+            throw  new Exception();
+        }
+
+    }
+
+    public WalletResponse info(int id) throws Exception{
+        try {
+            return new WalletResponse("SUCCESS",walletMapper.walletList(id));
+        }catch (Exception e){
+            throw new Exception();
+        }
     }
 }
 

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kusob.mapper.CommentsMapper">
+    <insert id="addComment">
+      INSERT INTO Comments (post_id,writter_id,contents,written_date)
+      VALUES (#{post_id},#{writter_id},#{contents},now());
+    </insert>
+    <select id="postComments" resultType="com.kusob.domain.Comments.Comments">
+        select comment_id,post_id,writter_id,contents,written_date
+        from Comments
+        where post_id=#{post_id} ORDER BY written_date DESC ;
+    </select>
+    <update id="edditComment">
+        update Comments
+        SET
+          contents=#{contents}
+        where comment_id=#{comment_id};
+    </update>
+    <delete id="commentDelete">
+        delete FROM Comments WHERE comment_id=#{id};
+    </delete>
+
+</mapper>

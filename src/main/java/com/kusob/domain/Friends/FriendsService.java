@@ -1,6 +1,7 @@
 package com.kusob.domain.Friends;
 
 import com.kusob.config.JwtConfig.JwtService;
+import com.kusob.domain.member.ListMemberFriendResponseDto;
 import com.kusob.domain.ResponseDTO;
 import com.kusob.domain.member.MemberFreindDto;
 import com.kusob.mapper.FriendsMapper;
@@ -10,9 +11,7 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by seungki on 2017-07-18.
@@ -33,6 +32,9 @@ public class FriendsService {
         try {
             String token = httpServletRequest.getHeader("Authorization");
             int myid = jwtService.idFromToken(token);
+            if(friendsMapper.existFrined(new FriendsAgreeDto(myid,id))==null){
+                return new ResponseDTO("EXIST");
+            }
             Friends my = new Friends(myid,id,0);
             Friends other = new Friends(id,myid,1);
             friendsMapper.meetFriends(my);
@@ -55,9 +57,9 @@ public class FriendsService {
             return new ResponseDTO("FAIL");
         }
     }
-    public Map confirmMySide(HttpServletRequest httpServletRequest){
+    public ListMemberFriendResponseDto confirmMySide(HttpServletRequest httpServletRequest) throws Exception{
         List<Integer> list = null;
-        Map<Integer,MemberFreindDto> map = new HashMap<>();
+        List<MemberFreindDto> mf_list = new ArrayList<>();
         try{
             list = new ArrayList<>();
             String token = httpServletRequest.getHeader("Authorization");
@@ -65,18 +67,16 @@ public class FriendsService {
             list=friendsMapper.confirmMySide(myid);
             for(int a=0;a<list.size();a++){
                 MemberFreindDto m1=memberMapper.selectById(list.get(a));
-                map.put(a+1,m1);
+                mf_list.add(m1);
             }
-            return map;
+            return new ListMemberFriendResponseDto("SUCCESS",mf_list);
         }catch (Exception e){
-            map= new HashMap<>();
-            map.put(0,null);
-            return map;
+            throw new Exception();
         }
     }
-    public Map confirmCheck(HttpServletRequest httpServletRequest){
+    public ListMemberFriendResponseDto confirmCheck(HttpServletRequest httpServletRequest)throws Exception{
         List<Integer> list = null;
-        Map<Integer,MemberFreindDto> map = new HashMap<>();
+        List<MemberFreindDto> mf_list = new ArrayList<>();
         try{
             list = new ArrayList<>();
             String token = httpServletRequest.getHeader("Authorization");
@@ -84,19 +84,39 @@ public class FriendsService {
             list=friendsMapper.confirmCheck(myid);
             for(int a=0;a<list.size();a++){
                 MemberFreindDto m1=memberMapper.selectById(list.get(a));
-                map.put(a+1,m1);
+                mf_list.add(m1);
             }
-            return map;
+            return new ListMemberFriendResponseDto("SUCCESS",mf_list);
         }catch (Exception e){
-            map= new HashMap<>();
-            map.put(0,null);
-            return map;
+            throw  new Exception();
         }
     }
-    /*public List<MemberFreindDto> myFriend(HttpServletRequest httpServletRequest){
-        try {
-                String token = httpServletRequest.getHeader("Authorization");
-                int id = jwtService.idFromToken(token);
+    public ListMemberFriendResponseDto myfriend(HttpServletRequest httpServletRequest) throws Exception{
+        String token = httpServletRequest.getHeader("Authorization");
+        int id = jwtService.idFromToken(token);
+        List<MemberFreindDto> f_list = null;
+        try{
+            List<Integer> list =friendsMapper.myFriend(id);
+            f_list = new ArrayList<>();
+            for(int a=0;a<list.size();a++){
+                f_list.add(memberMapper.selectById(list.get(a)));
+            }
+            return new ListMemberFriendResponseDto("SUCCESS",f_list);
+        }catch (Exception e){
+           throw new Exception();
         }
-    }*/
+
+    }
+    public ResponseDTO delete(HttpServletRequest httpServletRequest,int id) throws Exception{
+        try{
+            String token=httpServletRequest.getHeader("Authorization");
+            int myid= jwtService.idFromToken(token);
+            friendsMapper.deleteFrined(new FriendDeleteDto(myid,id));
+            return new ResponseDTO("SUCCESS");
+        }catch (Exception e){
+            throw new Exception();
+        }
+    }
+
+
 }

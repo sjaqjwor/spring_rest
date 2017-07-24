@@ -71,6 +71,15 @@ public class MemberController {
         }
         return null;
     }
+    @ApiOperation(value = "닉네임검사", notes="닉네임검사 api")
+    @RequestMapping(value="/checknickname",method = RequestMethod.GET)
+    public ResponseDTO check(@RequestParam(value = "nickname")String nickname)  throws AuthenticationException {
+        try{
+            return memberService.check(nickname);
+        }catch (Exception e){
+            return new ResponseDTO("FAIL");
+        }
+    }
 
 
     @ApiImplicitParams({
@@ -90,5 +99,18 @@ public class MemberController {
             log.info(e.getMessage());
         }
         return null;
+    }
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value ="authorization header", required = true,
+                    dataType = "string", paramType = "Header")
+    })
+    @ApiOperation(value = "My  nickName", notes = "MyNickName",response = MemberFreindDto.class)
+    @RequestMapping(value = "/mynickname", method = RequestMethod.GET)
+    public MemberFreindDto mynickname(HttpServletRequest httpServletRequest) {
+        try {
+            return memberService.myNickName(httpServletRequest);
+        } catch (Exception e) {
+            return new MemberFreindDto("FAIL",0);
+        }
     }
 }

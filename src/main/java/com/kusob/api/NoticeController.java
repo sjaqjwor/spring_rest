@@ -5,14 +5,19 @@ package com.kusob.api;
  */
 
 import com.kusob.domain.notice.Notice;
+import com.kusob.domain.notice.NoticeListResponse;
+import com.kusob.domain.notice.NoticeService;
 import com.kusob.mapper.NoticeMapper;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Slf4j
@@ -22,7 +27,7 @@ import java.util.List;
 public class NoticeController {
 
     @Autowired
-    NoticeMapper noticeMapper;
+    NoticeService noticeService;
 
 //    @ApiOperation(value = "공지사항 작성", notes = "공지사항 작성")
 //    @RequestMapping(value = "save", method = RequestMethod.POST)
@@ -60,16 +65,18 @@ public class NoticeController {
 //        return null;
 //    }
 
-    @ApiOperation(value = "공지사항 전체 리스트", notes = "공지사항 전체 리스트")
-    @RequestMapping(value = "", method = RequestMethod.GET)
-    public List<Notice> allList() {
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value ="authorization header", required = true,
+                    dataType = "string", paramType = "Header")
+    })
+    @ApiOperation(value = "공지사항 전체 리스트", notes = "공지사항 전체 리스트",response = NoticeListResponse.class)
+    @RequestMapping(value = "/noticelist", method = RequestMethod.GET)
+    public NoticeListResponse allList(HttpServletRequest httpServletRequest) {
         try {
-            return noticeMapper.selectAll();
+            return noticeService.all(httpServletRequest);
         } catch (Exception e) {
-            log.info(e.getMessage());
+            return new NoticeListResponse("FAIL",null);
         }
-        System.out.println("null");
-        return null;
     }
 
 //    @ApiOperation(value = "공지사항 읽기", notes = "공지사항 읽기")

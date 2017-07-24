@@ -1,5 +1,6 @@
 package com.kusob.mapper;
 
+import com.kusob.domain.Friends.FriendDeleteDto;
 import com.kusob.domain.Friends.Friends;
 import com.kusob.domain.Friends.FriendsAgreeDto;
 import com.kusob.domain.member.MemberFreindDto;
@@ -17,5 +18,7 @@ public interface FriendsMapper {
     List<Integer> confirmMySide(int id);
     List<Integer> confirmCheck(int id);
     List<Integer> myFriend(int id);
+    void deleteFrined(FriendDeleteDto friendDeleteDto);
+    Friends existFrined(FriendsAgreeDto friendsAgreeDto);
 
 }

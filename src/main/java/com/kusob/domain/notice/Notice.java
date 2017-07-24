@@ -15,6 +15,6 @@ import java.sql.Date;
 public class Notice {
     private int notice_id;
     private String title;
-    private String content;
-    private Date date;
+    private String contents;
+    private Date create_date;
 }

@@ -116,9 +116,9 @@ public class MemberService {
         return jwtResponseDto;
     }
 
-    public Map searchFriend(String name, HttpServletRequest httpServletRequest){
+    public ListMemberFriendResponseDto searchFriend(String name, HttpServletRequest httpServletRequest) throws Exception{
         List<MemberFreindDto> searchFriends=null;
-        Map<Integer,MemberFreindDto> fmap = new HashMap<>();
+        List<MemberFreindDto> flist = new ArrayList<>();
         try {
             String token = httpServletRequest.getHeader("Authorization");
             int id = jwtService.idFromToken(token);
@@ -126,14 +126,34 @@ public class MemberService {
             FriendSearchDto fd = new FriendSearchDto(name,id);
             searchFriends=memberMapper.selectByFriend(fd);
             for(int a=0;a<searchFriends.size();a++){
-                fmap.put(a+1,searchFriends.get(a));
+                flist.add(searchFriends.get(a));
             }
-            return fmap;
+            return new ListMemberFriendResponseDto("SUCCESS",flist);
         }catch (Exception e){
-            fmap=new HashMap<>();
-            fmap.put(0,null);
+            throw new Exception();
         }
-        return fmap;
+    }
+    public ResponseDTO check(String name) throws Exception{
+        try{
+            String nickname = memberMapper.nicknameCheck(name);
+            if(nickname==null){
+                return new ResponseDTO("SUCCESS");
+            }else{
+                return new ResponseDTO("FAIL");
+            }
+        }catch (Exception e){
+            throw  new Exception();
+        }
+    }
+    public MemberFreindDto myNickName(HttpServletRequest httpServletRequest) throws Exception{
+        try{
+            String token = httpServletRequest.getHeader("Authorization");
+            int id = jwtService.idFromToken(token);
+            MemberFreindDto memberFreindDto = memberMapper.selectById(id);
+            return memberFreindDto;
+        }catch (Exception e ){
+            throw new Exception();
+        }
     }
 }
 

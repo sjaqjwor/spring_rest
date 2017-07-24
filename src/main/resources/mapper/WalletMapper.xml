@@ -6,14 +6,27 @@
 
     <insert id="addWallet" useGeneratedKeys="true" parameterType="com.kusob.domain.wallet.Wallet" keyProperty="wallet_id">
         INSERT INTO 
-          Wallets (wallet_name,wallet_add,wallet_qrcode, create_date)
+          Wallets (wallet_name,wallet_add,wallet_type,create_date)
         VALUES
-          (#{walletName},#{walletAddr},#{walletQr},now());
+          (#{walletName},#{walletAddr},#{walletType},now());
     </insert>
-    <select id="selectByWalletId" resultType="com.kusob.domain.wallet.Wallet">
-      select *
-      from Wallets
-      where wallet_id=#{id}
+    <select id="walletList" resultType="com.kusob.domain.wallet.Wallet">
+     SELECT *
+     FROM Wallets
+     WHERE wallet_id= #{wallet_id};
     </select>
+    <update id="editWallet">
+        UPDATE Wallets
+        SET
+          wallet_name=#{walletName},
+          wallet_add=#{walletAddr},
+          wallet_type=#{walletType}
+        WHERE
+          wallet_id=#{walletId};
+    </update>
+    <delete id="deleteWallet">
+        delete FROM Wallets where wallet_id=#{id};
+    </delete>
+
 
 </mapper>
