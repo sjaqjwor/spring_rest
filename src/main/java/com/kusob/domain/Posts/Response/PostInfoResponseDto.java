@@ -26,8 +26,9 @@ public class PostInfoResponseDto {
     int likes_count;
     boolean possibleEdditAndDelete;
     List<CommentResponse> comment_list;
+    boolean like;
 
-    public PostInfoResponseDto(String message, Posts posts, String name, boolean type,List comments){
+    public PostInfoResponseDto(String message, Posts posts, String name, boolean type,List comments,boolean like){
         this.message=message;
         this.title= posts.getTitle();
         this.contents= posts.getContents();
@@ -36,6 +37,7 @@ public class PostInfoResponseDto {
         this.likes_count=posts.getLikes_count();
         this.possibleEdditAndDelete=type;
         this.comment_list=comments;
+        this.like=like;
 
     }
     public PostInfoResponseDto(String message){

@@ -21,4 +21,5 @@ public interface MemberMapper {
     List<MemberFreindDto> selectByFriend(FriendSearchDto friendSearchDto);
     MemberFreindDto selectById(int id);
     String nicknameCheck(String nickname);
+    void loginDate(String nickname);
 }

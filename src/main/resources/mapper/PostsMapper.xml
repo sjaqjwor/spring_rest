@@ -4,14 +4,14 @@
 
 <mapper namespace="com.kusob.mapper.PostsMapper">
     <select id="allList_3" resultType="com.kusob.domain.Posts.Posts">
-      select p.*,m.nickname
+      select p.*,m.nickname,(select count(*) from Comments c where p.post_id=c.post_id) AS c_count
       FROM Posts p join Members m
       on p.writter_id=m.id
       ORDER BY likes_count DESC
       limit 3;
     </select>
     <select id="allList"  resultType="com.kusob.domain.Posts.Posts">
-      select p.*,m.nickname
+      select p.*,m.nickname,(select count(*) from Comments c where p.post_id=c.post_id) AS c_count
       FROM Posts p join Members m
       on p.writter_id=m.id
       where p.post_id not in(#{one},#{two},#{three})

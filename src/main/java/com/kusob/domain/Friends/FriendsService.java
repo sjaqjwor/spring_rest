@@ -32,7 +32,7 @@ public class FriendsService {
         try {
             String token = httpServletRequest.getHeader("Authorization");
             int myid = jwtService.idFromToken(token);
-            if(friendsMapper.existFrined(new FriendsAgreeDto(myid,id))==null){
+            if(friendsMapper.existFrined(new FriendsAgreeDto(myid,id))!=null){
                 return new ResponseDTO("EXIST");
             }
             Friends my = new Friends(myid,id,0);

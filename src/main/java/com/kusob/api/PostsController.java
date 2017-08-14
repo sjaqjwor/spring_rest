@@ -30,7 +30,17 @@ public class PostsController {
     })
     @ApiOperation(value = "Post 전체 리스트", notes = "Post 전체 리스트",response = PostListResponseDto.class)
     @RequestMapping(value = "/postlist", method = RequestMethod.GET)
-    public PostListResponseDto list(HttpServletRequest httpServletRequest ,@ApiParam(value = "기본값은 0 다음 10개를 보고 싶으면 1 그다음 열개는 2 이런식")
+    public PostListResponseDto list(HttpServletRequest httpServletRequest,@ApiParam(value = "기본값은 0 다음 10개를 보고 싶으면 1 그다음 열개는 2 이런식")
+    @RequestParam(value = "size") int size) {
+        try {
+            return postService.list(httpServletRequest,size);
+        } catch (Exception e) {
+            return new PostListResponseDto("FAIL",null,null);
+        }
+    }
+
+    @RequestMapping(value = "/guestpostlist", method = RequestMethod.GET)
+    public PostListResponseDto guest_list(HttpServletRequest httpServletRequest,@ApiParam(value = "기본값은 0 다음 10개를 보고 싶으면 1 그다음 열개는 2 이런식")
     @RequestParam(value = "size") int size) {
         try {
             return postService.list(httpServletRequest,size);
@@ -79,6 +89,14 @@ public class PostsController {
             return new PostInfoResponseDto("FAIL");
         }
     }
+    @RequestMapping(value = "/guestpostinfo", method = RequestMethod.GET)
+    public PostInfoResponseDto guestinfo(HttpServletRequest httpServletRequest,@RequestParam(value = "post_id")int id) {
+        try {
+            return postService.info(httpServletRequest,id);
+        } catch (Exception e) {
+            return new PostInfoResponseDto("FAIL");
+        }
+    }
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value ="authorization header", required = true,
                     dataType = "string", paramType = "Header")
@@ -101,6 +119,19 @@ public class PostsController {
     public ResponseDTO like(HttpServletRequest httpServletRequest, @RequestParam(value = "post_id")int post_id) {
         try {
             return postService.like(httpServletRequest,post_id);
+        } catch (Exception e) {
+            return new ResponseDTO("FAIL");
+        }
+    }
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value ="authorization header", required = true,
+                    dataType = "string", paramType = "Header")
+    })
+    @ApiOperation(value = "POST 좋아요 취소", notes = "Post 좋아요 취소 ",response = ResponseDTO.class)
+    @RequestMapping(value = "/postlikedelete", method = RequestMethod.DELETE)
+    public ResponseDTO likeDelete(HttpServletRequest httpServletRequest, @RequestParam(value = "post_id")int post_id) {
+        try {
+            return postService.likeDelete(httpServletRequest,post_id);
         } catch (Exception e) {
             return new ResponseDTO("FAIL");
         }

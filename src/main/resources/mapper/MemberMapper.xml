@@ -27,4 +27,10 @@
         from Members
         where nickname=#{nickname};
     </select>
+    <update id="loginDate">
+      UPDATE Members
+      SET
+        login_date=now()
+      WHERE  nickname=#{nickname};
+    </update>
 </mapper>

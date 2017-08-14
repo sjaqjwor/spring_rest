@@ -7,7 +7,9 @@ import com.kusob.domain.Posts.Posts;
 import com.kusob.domain.Posts.Request.PostEdditReqeustDto;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by seungki on 2017-07-18.
@@ -15,5 +17,6 @@ import java.util.List;
 @Mapper
 public interface PostLikesMapper {
     void insertLikes(PostLikesCreate postLikesCreate);
-
+    int confirmLike(Map<String,Integer> map);
+    void deleteLikse(Map<String,Integer> map);
 }

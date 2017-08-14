@@ -19,7 +19,9 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by seungki on 2017-07-20.
@@ -53,7 +55,6 @@ public class PostService {
                 }
             PostTop postTop = new PostTop(top_three.get(0).getPost_id(),top_three.get(1).getPost_id(),top_three.get(2).getPost_id(),num);
                 List<Posts> list = postsMapper.allList(postTop);
-            System.out.println(list.size()+"승기");
                 return new PostListResponseDto("SUCCESS",list ,postsMapper.allList_3());
         }catch (Exception e){
             throw new Exception();
@@ -85,13 +86,16 @@ public class PostService {
             Posts post = postsMapper.postsInfo(id);
             String nickName = memberMapper.selectById(post.getWritter_id()).getNickname();
             List<Comments> list = commentsMapper.postComments(id);
-            System.out.println(list.size()+"승기");
             List<CommentResponse> comment_list = new ArrayList<>();
             for(Comments c : list){
                 String nickname= memberMapper.selectById(c.getWritter_id()).getNickname();
                 comment_list.add(new CommentResponse(c,nickname,c.getWritter_id()==myid));
+
             }
-            return new PostInfoResponseDto("SUCCESS",post,nickName,myid==post.getWritter_id(),comment_list);
+            Map<String,Integer> map = new HashMap<String,Integer>();
+            map.put("id",myid);
+            map.put("post_id",post.getPost_id());
+            return new PostInfoResponseDto("SUCCESS",post,nickName,myid==post.getWritter_id(),comment_list,postLikesMapper.confirmLike(map)==0 ? false : true);
         }catch (Exception e){
             throw new Exception();
         }
@@ -113,6 +117,23 @@ public class PostService {
             postsMapper.postlike(post);
             int myid= jwtService.idFromToken(token);
             postLikesMapper.insertLikes(new PostLikesCreate(id,myid));
+            return new ResponseDTO("SUCCESS");
+        }catch (Exception e){
+            throw  new Exception();
+        }
+    }
+
+    public ResponseDTO likeDelete(HttpServletRequest httpServletRequest,int id) throws Exception{
+        try{
+            Posts post = postsMapper.postsInfo(id);
+            post.setLikes_count(post.getLikes_count()-1);
+            postsMapper.postlike(post);
+            String token=httpServletRequest.getHeader("Authorization");
+            int myid= jwtService.idFromToken(token);
+            Map<String,Integer> map = new HashMap<String,Integer>();
+            map.put("id",myid);
+            map.put("post_id",post.getPost_id());
+            postLikesMapper.deleteLikse(map);
             return new ResponseDTO("SUCCESS");
         }catch (Exception e){
             throw  new Exception();

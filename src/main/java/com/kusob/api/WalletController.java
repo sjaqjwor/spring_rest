@@ -30,7 +30,7 @@ public class WalletController {
                     dataType = "string", paramType = "Header")
     })
     @ApiOperation(value = "나의 지갑 리스트", notes = "토큰값 넘겨주세요~",response = ListWalletResponse.class)
-    @RequestMapping(value = "list", method = RequestMethod.GET)
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
     public ListWalletResponse walletList(HttpServletRequest httpServletRequest) {
         try {
             String token = httpServletRequest.getHeader("Authorization");

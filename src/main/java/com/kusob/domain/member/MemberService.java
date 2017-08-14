@@ -12,6 +12,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -27,7 +29,7 @@ import javax.servlet.http.HttpServletRequest;
 @Service
 public class MemberService {
     @Autowired
-    MemberMapper memberMapper;
+    private MemberMapper memberMapper;
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -88,11 +90,12 @@ public class MemberService {
     public ResponseDTO join(MemberDTO memberDTO) {
         ResponseDTO responseDTO = new ResponseDTO();
         try {
-            memberMapper.join(memberDTO);
+            MemberDTO m = memberDTO;
+            memberMapper.join(m);
             responseDTO.setMessage("SUCCESS");
         } catch (Exception e) {
             responseDTO.setMessage("FAIL");
-            System.out.println(e);
+
         }
         return responseDTO;
     }
@@ -108,10 +111,11 @@ public class MemberService {
             //인증하 객체를 security에 저장
             SecurityContextHolder.getContext().setAuthentication(authentication);
             jwtToken=jwtService.createToken(authenticationToken,authentication.getName());
+            memberMapper.loginDate(authentication.getName());
             jwtResponseDto = new JwtResponseDto(jwtToken,"SUCCESS");
         }catch (Exception e){
             jwtResponseDto = new JwtResponseDto("인증실패","FAIL");
-            System.out.println(e);
+
         }
         return jwtResponseDto;
     }

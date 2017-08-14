@@ -10,7 +10,7 @@
     <select id="postComments" resultType="com.kusob.domain.Comments.Comments">
         select comment_id,post_id,writter_id,contents,written_date
         from Comments
-        where post_id=#{post_id} ORDER BY written_date DESC ;
+        where post_id=#{post_id} ORDER BY written_date ASC ;
     </select>
     <update id="edditComment">
         update Comments
@@ -21,5 +21,10 @@
     <delete id="commentDelete">
         delete FROM Comments WHERE comment_id=#{id};
     </delete>
+    <select id="countComment" resultType="Int">
+        select count(*)
+        from Comments
+        where post_id=#{post_id};
+    </select>
 
 </mapper>

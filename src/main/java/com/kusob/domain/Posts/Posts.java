@@ -20,4 +20,5 @@ public class Posts {
     String written_date;
     int likes_count;
     String nickname;
+    int c_count;
 }

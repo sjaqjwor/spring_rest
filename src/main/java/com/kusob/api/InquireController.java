@@ -22,7 +22,7 @@ public class InquireController {
     InquireService inquireService;
 
     @ApiOperation(value = "문의하기 보내기", notes = "문의하기 api")
-    @RequestMapping(value = "", method = RequestMethod.POST)
+    @RequestMapping(value = "/", method = RequestMethod.POST)
     public ResponseDTO sendInquireMail(@ApiParam(value = "내용, 답변 받을 이메일 주소") @RequestBody Inquire inquire) {
         try {
             return inquireService.sendInquireMail(inquire);

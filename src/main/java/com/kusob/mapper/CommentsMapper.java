@@ -17,5 +17,6 @@ public interface CommentsMapper {
     void addComment(CommentsCreate commentsCreate);
     void edditComment(CommentEdditRequestDto commentEdditRequestDto);
     void commentDelete(int id);
+    int countComment(int post_id);
 
 }

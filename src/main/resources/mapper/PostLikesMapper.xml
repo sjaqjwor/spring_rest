@@ -7,4 +7,12 @@
       INSERT INTO PostLikes(post_id,id)
       VALUES (#{post_id},#{id});
     </insert>
+    <select id="confirmLike" resultType="int">
+        select count(*)
+        from PostLikes
+        where id=#{id} and post_id=#{post_id};
+    </select>
+    <delete id="deleteLikse">
+        DELETE FROM PostLikes WHERE id=#{id} and post_id=#{post_id};
+    </delete>
 </mapper>

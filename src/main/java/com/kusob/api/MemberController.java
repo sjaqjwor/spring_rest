@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.naming.AuthenticationException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 
 /**
@@ -28,7 +29,7 @@ public class MemberController {
     JwtService jwtService;
 
     @ApiOperation(value = "이메일로 멤버 검색", notes = "이메일로 멤버 검색 혹은 이메일 중복검사")
-    @RequestMapping(value = "", method = RequestMethod.GET)
+    @RequestMapping(value = "/", method = RequestMethod.GET)
     public Member allList(@ApiParam(value = "이메일 주소")
                                  @RequestParam(value = "email") String email) {
         try {
@@ -71,6 +72,17 @@ public class MemberController {
         }
         return null;
     }
+    @ApiOperation(value = "토큰로그인", notes="토큰 로그인 api")
+    @RequestMapping(value="/tokenlogin",method = RequestMethod.POST)
+    public JwtResponseDto tokenlogin(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse)  throws AuthenticationException {
+        try{
+            return null;
+            //return memberService.login(memberLoginDto);
+        }catch (Exception e){
+            log.info(e.getMessage());
+        }
+        return null;
+    }
     @ApiOperation(value = "닉네임검사", notes="닉네임검사 api")
     @RequestMapping(value="/checknickname",method = RequestMethod.GET)
     public ResponseDTO check(@RequestParam(value = "nickname")String nickname)  throws AuthenticationException {
@@ -92,8 +104,6 @@ public class MemberController {
         try{
             String token = httpServletRequest.getHeader("Authorization");
             Date date = jwtService.expFromToken(token);
-            System.out.println(date);
-            System.out.print("성공");
             return null;
         }catch (Exception e){
             log.info(e.getMessage());

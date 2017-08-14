@@ -70,7 +70,8 @@ public class WalletService {
             responseDTO.setMessage("SUCCESS");
         } catch (Exception e) {
             responseDTO.setMessage("FAIL");
-            System.out.println(e);
+
+
         }
         return responseDTO;
     }
@@ -82,7 +83,7 @@ public class WalletService {
             responseDTO.setMessage("SUCCESS");
         } catch (Exception e) {
             responseDTO.setMessage("FAIL");
-            System.out.println(e);
+
         }
         return responseDTO;
     }
